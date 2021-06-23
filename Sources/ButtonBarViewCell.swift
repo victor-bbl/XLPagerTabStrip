@@ -45,8 +45,12 @@ open class ButtonBarViewCell: UICollectionViewCell {
             super.isSelected = newValue
             if (newValue) {
                 accessibilityTraits.insert(.selected)
+                
+                label.textColor = label.textColor.withAlphaComponent(1)
             } else {
                 accessibilityTraits.remove(.selected)
+                
+                label.textColor = label.textColor.withAlphaComponent(0.3)
             }
         }
     }
