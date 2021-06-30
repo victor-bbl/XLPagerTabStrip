@@ -46,11 +46,11 @@ open class ButtonBarViewCell: UICollectionViewCell {
             if (newValue) {
                 accessibilityTraits.insert(.selected)
                 
-                label.textColor = label.textColor.withAlphaComponent(1)
+                label.textColor = #colorLiteral(red: 0.3333012462, green: 0.3333538771, blue: 0.3332896829, alpha: 1)
             } else {
                 accessibilityTraits.remove(.selected)
                 
-                label.textColor = label.textColor.withAlphaComponent(0.3)
+                label.textColor = #colorLiteral(red: 0.2233612835, green: 0.5215935707, blue: 0, alpha: 1)
             }
         }
     }
