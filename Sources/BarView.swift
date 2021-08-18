@@ -28,6 +28,7 @@ open class BarView: UIView {
 
     open lazy var selectedBar: UIView = { [unowned self] in
         let selectedBar = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height))
+        selectedBar.layer.cornerRadius = 3
         return selectedBar
     }()
 
@@ -37,25 +38,37 @@ open class BarView: UIView {
                 selectedIndex = optionsCount - 1
             }
         }
+        didSet{
+            for index in 1...optionsCount{
+                let view = UIView(frame: CGRect(x: (self.frame.size.width/CGFloat(optionsCount))*CGFloat(index-1),
+                                                y: 0,
+                                                width: (self.frame.size.width/CGFloat(optionsCount))*0.9,
+                                                height: self.frame.size.height))
+                view.backgroundColor = #colorLiteral(red: 0.2233612835, green: 0.5215935707, blue: 0, alpha: 1)
+                view.layer.cornerRadius = 3
+                addSubview(view)
+            }
+            addSubview(selectedBar)
+        }
     }
     var selectedIndex = 0
 
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        addSubview(selectedBar)
+//        addSubview(selectedBar)
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(selectedBar)
+//        addSubview(selectedBar)
     }
 
     // MARK: - Helpers
 
     private func updateSelectedBarPosition(with animation: Bool) {
         var frame = selectedBar.frame
-        frame.size.width = self.frame.size.width / CGFloat(optionsCount)
-        frame.origin.x = frame.size.width * CGFloat(selectedIndex)
+        frame.size.width = (self.frame.size.width / CGFloat(optionsCount)) * 0.9
+        frame.origin.x = (self.frame.size.width / CGFloat(optionsCount)) * CGFloat(selectedIndex)
         if animation {
             UIView.animate(withDuration: 0.3, animations: { [weak self] in
                 self?.selectedBar.frame = frame
@@ -74,11 +87,11 @@ open class BarView: UIView {
         selectedIndex = (progressPercentage > 0.5) ? toIndex : fromIndex
 
         var newFrame = selectedBar.frame
-        newFrame.size.width = frame.size.width / CGFloat(optionsCount)
+        newFrame.size.width = frame.size.width / CGFloat(optionsCount) * 0.9
         var fromFrame = newFrame
-        fromFrame.origin.x = newFrame.size.width * CGFloat(fromIndex)
+        fromFrame.origin.x = (frame.size.width / CGFloat(optionsCount)) * CGFloat(fromIndex)
         var toFrame = newFrame
-        toFrame.origin.x = toFrame.size.width * CGFloat(toIndex)
+        toFrame.origin.x = (frame.size.width / CGFloat(optionsCount)) * CGFloat(toIndex)
         var targetFrame = fromFrame
         targetFrame.origin.x += (toFrame.origin.x - targetFrame.origin.x) * CGFloat(progressPercentage)
         selectedBar.frame = targetFrame
